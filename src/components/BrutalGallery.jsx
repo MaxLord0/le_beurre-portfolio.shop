@@ -1,25 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Lenis from 'lenis';
 import './BrutalGallery.css';
+import ShopSection from './ShopSection';
 
 const PREVIEW_IMAGES = [
   { src: "https://le-beurre.villagersyt.site/portfolio/Joel%20-%20horror.png", title: "Survival Horror", description: "Cinematic Elements" },
   { src: "https://le-beurre.villagersyt.site/portfolio/dream_saying.png", title: "Lore / Commentary", description: "Character Depth" },
   { src: "https://le-beurre.villagersyt.site/portfolio/mace_thumbnail.png", title: "Combat Highlight", description: "Dynamic Lighting" },
   { src: "https://le-beurre.villagersyt.site/portfolio/cpvp_montage_thumbnail.png", title: "CPVP Action", description: "High Impact" },
-  { src: "https://le-beurre.villagersyt.site/portfolio/osh.png", title: "Creative Story", description: "Vibrant Composition" },
-  { src: "https://le-beurre.villagersyt.site/portfolio/AyyLamar%20-%20I%20Mastered%20Hacks%20in%20Minecraft%20(v2).png", title: "Viral Bait", description: "High Contrast" }
+  { src: "https://le-beurre.villagersyt.site/portfolio/osh.png", title: "Creative Story", description: "Vibrant Composition" }
 ];
 
 const CONFIG = {
-  itemCount: 20,
+  itemCount: 7, // 2 Texts, 5 Cards
   starCount: 150,
-  zGap: 800,
-  camSpeed: 2.5,
-  loopSize: 20 * 800, // Calculated statically
-  colors: ['#ff7300', '#6b21a8', '#ffffff']
+  zGap: 1200, // Increased gap for pacing
+  camSpeed: 2.5
 };
-const TEXTS = ["LE_BEURRE", "VELOCITY", "ELEVATED", "SYSTEM", "NEXT-GEN", "DESIGN", "BRUTAL", "HYPER", "ORBIT", "IMPACT"];
+const TEXTS = ["LE_BEURRE", "HYPER DESIGN", "TERMINAL_LINK"];
 
 const BrutalGallery = () => {
   const worldRef = useRef(null);
@@ -27,6 +25,8 @@ const BrutalGallery = () => {
   const velReadoutRef = useRef(null);
   const fpsRef = useRef(null);
   const coordRef = useRef(null);
+  const proxyRef = useRef(null);
+  const shopOverlayRef = useRef(null);
   const itemsStateRef = useRef([]);
 
   const [items, setItems] = useState([]);
@@ -35,13 +35,15 @@ const BrutalGallery = () => {
   // Generate Items
   useEffect(() => {
     const newItems = [];
+    let imgIndex = 0;
+    
     for (let i = 0; i < CONFIG.itemCount; i++) {
-      const isHeading = i % 4 === 0;
+      const isHeading = i === 1 || i === 4;
       if (isHeading) {
         newItems.push({
           type: 'text',
           id: i,
-          text: TEXTS[i % TEXTS.length],
+          text: TEXTS[i === 1 ? 0 : 1],
           x: 0, 
           y: 0, 
           rot: 0,
@@ -49,19 +51,19 @@ const BrutalGallery = () => {
         });
       } else {
         const randId = Math.floor(Math.random() * 9999);
-        const imgObj = PREVIEW_IMAGES[((i - Math.floor(i / 4))) % PREVIEW_IMAGES.length];
+        const imgObj = PREVIEW_IMAGES[imgIndex % PREVIEW_IMAGES.length];
         
-        const angle = (i / CONFIG.itemCount) * Math.PI * 6;
-        const x = Math.cos(angle) * (window.innerWidth * 0.3);
-        const y = Math.sin(angle) * (window.innerHeight * 0.3);
-        const rot = (Math.random() - 0.5) * 30;
+        const angle = (i / CONFIG.itemCount) * Math.PI * 4;
+        const x = Math.cos(angle) * (window.innerWidth * 0.25);
+        const y = Math.sin(angle) * (window.innerHeight * 0.25);
+        const rot = (Math.random() - 0.5) * 20;
 
         newItems.push({
           type: 'card',
           id: i,
           randId,
           imgObj,
-          num: i < 10 ? `0${i}` : String(i),
+          num: imgIndex < 9 ? `0${imgIndex + 1}` : String(imgIndex + 1),
           grid: `${Math.floor(Math.random() * 10)}x${Math.floor(Math.random() * 10)}`,
           dataSize: `${(Math.random() * 100).toFixed(1)}MB`,
           x, 
@@ -69,6 +71,7 @@ const BrutalGallery = () => {
           rot,
           baseZ: -i * CONFIG.zGap
         });
+        imgIndex++;
       }
     }
     
@@ -79,7 +82,7 @@ const BrutalGallery = () => {
         type: 'star',
         x: (Math.random() - 0.5) * 3000,
         y: (Math.random() - 0.5) * 3000,
-        baseZ: -Math.random() * CONFIG.loopSize
+        baseZ: -Math.random() * (CONFIG.itemCount * CONFIG.zGap)
       });
     }
 
@@ -89,13 +92,16 @@ const BrutalGallery = () => {
 
   // Animation Loop
   useEffect(() => {
-    // We only mount Lenis once layout is ready. Also wait a microtask for rendering items.
     if (!items.length || !document.querySelector('.brutal-mode')) return;
 
-    // Body overflow auto so Lenis has something to scroll (since we use a virtual box)
     document.body.style.overflow = "auto";
-    // We make sure the wrapper container disables its own clipping, or lenis will be tied to body
     
+    // Set Proxy Height statically mapped to the Z-index space
+    const maxScroll = (CONFIG.itemCount * CONFIG.zGap) / CONFIG.camSpeed;
+    if (proxyRef.current) {
+      proxyRef.current.style.height = `${maxScroll + window.innerHeight + 1000}px`;
+    }
+
     const state = {
       scroll: 0,
       velocity: 0,
@@ -127,7 +133,6 @@ const BrutalGallery = () => {
     let lastTime = 0;
 
     const domItems = worldRef.current.querySelectorAll('.brutal-item, .star');
-
     const combinedLogicNodes = [...items, ...stars];
 
     function raf(time) {
@@ -144,8 +149,9 @@ const BrutalGallery = () => {
       if (velReadoutRef.current) velReadoutRef.current.innerText = Math.abs(state.velocity).toFixed(2);
       if (coordRef.current) coordRef.current.innerText = `${state.scroll.toFixed(0)}`;
 
-      const shake = state.velocity * 0.2;
-      const tiltX = state.mouseY * 5 - state.velocity * 0.5;
+      // Engine Effects
+      const shake = state.velocity * 0.1;
+      const tiltX = state.mouseY * 5 - state.velocity * 0.3;
       const tiltY = state.mouseX * 5;
 
       if (worldRef.current) {
@@ -159,24 +165,29 @@ const BrutalGallery = () => {
       }
 
       const cameraZ = state.scroll * CONFIG.camSpeed;
-      const modC = CONFIG.loopSize;
 
+      // Render Loop
       domItems.forEach((el, index) => {
         const itemInfo = combinedLogicNodes[index];
         if (!itemInfo) return;
 
-        let relZ = itemInfo.baseZ + cameraZ;
-        let vizZ = ((relZ % modC) + modC) % modC;
-        if (vizZ > 500) vizZ -= modC; 
+        let vizZ = itemInfo.baseZ + cameraZ; // Linear motion, NO infinite wrapping!
 
         let alpha = 1;
-        if (vizZ < -3000) alpha = 0;
-        else if (vizZ < -2000) alpha = (vizZ + 3000) / 1000;
+        if (vizZ < -4000) alpha = 0;
+        else if (vizZ < -2000) alpha = (vizZ + 4000) / 2000;
         
         if (vizZ > 100 && itemInfo.type !== 'star') alpha = 1 - ((vizZ - 100) / 400);
         if (alpha < 0) alpha = 0;
         
-        el.style.opacity = alpha;
+        // Hide completely if out of view for performance
+        if (alpha <= 0.05) {
+            el.style.opacity = 0;
+            el.style.display = 'none';
+        } else {
+            el.style.display = 'flex';
+            el.style.opacity = alpha;
+        }
 
         if (alpha > 0) {
           let trans = `translate3d(${itemInfo.x}px, ${itemInfo.y}px, ${vizZ}px)`;
@@ -194,13 +205,26 @@ const BrutalGallery = () => {
             }
           } else {
             const t = time * 0.001;
-            const float = Math.sin(t + itemInfo.x) * 10;
+            const float = Math.sin(t + itemInfo.x) * 5;
             trans += ` rotateZ(${itemInfo.rot}deg) rotateY(${float}deg)`;
           }
 
           el.style.transform = trans;
         }
       });
+
+      // Shop Overlay Fade Logic
+      if (shopOverlayRef.current) {
+        const threshold = maxScroll - 500; 
+        if (state.scroll > threshold) {
+           const shopAlpha = Math.min(1, (state.scroll - threshold) / 500);
+           shopOverlayRef.current.style.opacity = shopAlpha;
+           shopOverlayRef.current.style.pointerEvents = shopAlpha > 0.5 ? 'auto' : 'none';
+        } else {
+           shopOverlayRef.current.style.opacity = 0;
+           shopOverlayRef.current.style.pointerEvents = 'none';
+        }
+      }
 
       rafId = requestAnimationFrame(raf);
     }
@@ -210,39 +234,32 @@ const BrutalGallery = () => {
       lenis.destroy();
       cancelAnimationFrame(rafId);
       window.removeEventListener('mousemove', handleMouseMove);
-      document.body.style.overflow = "hidden"; // restore for global rules
+      document.body.style.overflow = "hidden";
     };
   }, [items, stars]);
 
   return (
     <div className="brutal-mode">
-      {/* Overlays */}
       <div className="scanlines"></div>
       <div className="vignette"></div>
       <div className="noise"></div>
 
-      {/* HUD Navigation Layer (Replaces original App.jsx Nav but keeps same links inside Brutal Mode style) */}
       <nav style={{
-        position: 'absolute',
+        position: 'fixed',
         top: 0,
         width: '100%',
         padding: '32px 48px',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        zIndex: 50,
+        zIndex: 150,
         pointerEvents: 'none'
       }}>
         <div style={{ fontFamily: 'var(--font-display)', fontWeight: 900, fontSize: '1.2rem', letterSpacing: '4px', pointerEvents: 'auto' }}>
           LE_BEURRE
         </div>
-        <div style={{ display: 'flex', gap: '48px', fontSize: '0.8rem', fontWeight: 600, letterSpacing: '2px', fontFamily: 'monospace', pointerEvents: 'auto' }}>
-          <a href="#" onClick={(e) => e.preventDefault()} style={{ borderBottom: '1px solid var(--accent)'}}>// WORKS</a>
-          <a href="#" onClick={(e) => e.preventDefault()}>// CONTACT</a>
-        </div>
       </nav>
 
-      {/* HUD Info */}
       <div className="hud">
           <div className="hud-top" style={{ marginTop: '60px' }}>
               <span>SYS.READY</span>
@@ -255,12 +272,11 @@ const BrutalGallery = () => {
           </div>
           <div className="hud-bottom">
               <span>COORD: <strong ref={coordRef}>000</strong></span>
-              <div class="hud-line"></div>
-              <span>VER 2.0.4 [BETA]</span>
+              <div className="hud-line"></div>
+              <span>VER 3.0.0 [SHOP_ACTIVE]</span>
           </div>
       </div>
 
-      {/* 3D World */}
       <div className="viewport" ref={viewportRef}>
         <div className="world" ref={worldRef}>
           {items.map((item, idx) => {
@@ -298,7 +314,12 @@ const BrutalGallery = () => {
         </div>
       </div>
 
-      <div className="scroll-proxy"></div>
+      {/* Shop Terminal Overlay */}
+      <div ref={shopOverlayRef} style={{ opacity: 0, pointerEvents: 'none' }} className="fixed inset-0 z-[120]">
+         <ShopSection opacity={1} pointerEvents="auto" />
+      </div>
+
+      <div className="scroll-proxy" ref={proxyRef}></div>
     </div>
   );
 };
