@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import * as PricingCard from '@/components/ui/pricing-card';
 import { CheckCircle2, Package, Image as ImageIcon, Sparkles } from 'lucide-react';
 
+import { SignIn1 } from '@/components/ui/modern-stunning-sign-in';
+
 interface ShopSectionProps {
   opacity: number;
   pointerEvents: 'none' | 'auto';
@@ -90,7 +92,7 @@ const ShopSection: React.FC<ShopSectionProps> = ({ opacity, pointerEvents }) => 
                           ? 'bg-gradient-to-b from-[#ff7300] to-[#cc5a00] shadow-[0_10px_25px_rgba(255,115,0,0.2)] hover:from-[#ff851f] hover:to-[#e66600]' 
                           : 'bg-white/10 hover:bg-white/20'
                       )}
-                      onClick={() => alert(`Initiating checkout block for ${plan.name} via Stripe/PayPal/Crypto`)}
+                      onClick={() => setActiveTab('login')}
                     >
                       Purchase Node
                     </Button>
@@ -133,25 +135,7 @@ const ShopSection: React.FC<ShopSectionProps> = ({ opacity, pointerEvents }) => 
         )}
 
         {activeTab === 'login' && (
-          <div className="w-full max-w-md bg-white/5 border border-white/10 p-8 rounded-xl backdrop-blur-md text-white mt-10 shadow-2xl">
-            <h2 className="text-2xl font-bold font-[Syncopate] uppercase mb-2">Client Access</h2>
-            <p className="text-sm text-white/50 mb-8 font-mono">Login or create an account to manage your orders.</p>
-            <form className="space-y-4 font-mono" onSubmit={(e) => e.preventDefault()}>
-              <div>
-                <label className="block text-xs text-white/60 mb-1">EMAIL NODE</label>
-                <input type="email" placeholder="jack@example.com" className="w-full bg-black/50 border border-white/10 rounded px-4 py-3 text-sm focus:outline-none focus:border-[#ff7300] transition-colors" />
-              </div>
-              <div>
-                <label className="block text-xs text-white/60 mb-1">SECURE KEY</label>
-                <input type="password" placeholder="••••••••" className="w-full bg-black/50 border border-white/10 rounded px-4 py-3 text-sm focus:outline-none focus:border-[#ff7300] transition-colors" />
-              </div>
-              <Button className="w-full bg-[#6b21a8] hover:bg-[#832bc9] text-white py-6 shadow-[0_0_20px_rgba(107,33,168,0.4)]">INITIATE CONNECTION</Button>
-              <div className="text-center pt-4 border-t border-white/10 mt-6">
-                <span className="text-xs text-white/40">NO ACCOUNT? </span>
-                <a href="#" className="text-xs text-[#00f3ff] hover:underline cursor-none">REGISTER NOW</a>
-              </div>
-            </form>
-          </div>
+           <SignIn1 />
         )}
 
         {activeTab === 'contact' && (
