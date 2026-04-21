@@ -56,11 +56,16 @@ const ShopSection: React.FC<ShopSectionProps> = ({ opacity, pointerEvents }) => 
       <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
       <div className="fixed -top-1/2 left-1/2 h-[100vmin] w-[100vmin] -translate-x-1/2 rounded-full bg-[#ff7300]/10 blur-[100px] pointer-events-none"></div>
 
+      {/* Presentation Header */}
+      <div className="w-full max-w-4xl mt-12 z-10 mb-8">
+        <PresentationDashboard />
+      </div>
+
       {/* Navigation */}
-      <div className="flex gap-4 mb-10 z-10 mt-20">
+      <div className="flex gap-4 mb-10 z-10">
         <Button variant={activeTab === 'shop' ? 'default' : 'outline'} className={activeTab === 'shop' ? 'bg-[#ff7300] hover:bg-[#ff7300]/90 text-white' : 'border-white/20 text-white hover:bg-white/10'} onClick={() => setActiveTab('shop')}>Buy Products</Button>
         <Button variant={activeTab === 'login' ? 'default' : 'outline'} className={activeTab === 'login' ? 'bg-[#ff7300] hover:bg-[#ff7300]/90 text-white' : 'border-white/20 text-white hover:bg-white/10'} onClick={() => setActiveTab('login')}>Client Portal</Button>
-        <Button variant={activeTab === 'contact' ? 'default' : 'outline'} className={activeTab === 'contact' ? 'bg-purple-600 hover:bg-purple-700 text-white' : 'border-white/20 text-white hover:bg-white/10'} onClick={() => setActiveTab('contact')}>Contact Me</Button>
+        <Button variant={activeTab === 'contact' ? 'default' : 'outline'} className={activeTab === 'contact' ? 'bg-[#ff7300] hover:bg-[#ff7300]/90 text-white' : 'border-white/20 text-white hover:bg-white/10'} onClick={() => setActiveTab('contact')}>Contact Me</Button>
       </div>
 
       <div className="w-full max-w-6xl mx-auto px-4 pb-20 z-10 flex flex-col items-center">
