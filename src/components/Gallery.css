@@ -1,0 +1,123 @@
+.gallery-section {
+  padding: 120px 48px;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.gallery-header {
+  margin-bottom: 80px;
+}
+
+.gallery-title {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.gallery-subtitle {
+  color: #888888;
+  font-size: 1.1rem;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  column-gap: 40px;
+  row-gap: 80px;
+}
+
+.gallery-item {
+  position: relative;
+  cursor: none; /* Relies on CustomCursor */
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.image-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  aspect-ratio: 16/9;
+  transform: translateZ(30px);
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s var(--easing-smooth), filter 0.4s;
+}
+
+/* Elite hover states */
+.hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 115, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  backdrop-filter: blur(2px);
+  z-index: 2;
+}
+
+.view-text {
+  font-family: var(--font-display);
+  font-weight: 900;
+  letter-spacing: 4px;
+  font-size: 1.2rem;
+  color: #fff;
+  transform: translateY(20px);
+  transition: all 0.5s var(--easing-smooth);
+  opacity: 0;
+}
+
+.gallery-item:hover .image-wrapper {
+  box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 30px var(--accent-glow);
+  border-color: rgba(255,115,0,0.4);
+}
+
+.gallery-item:hover img {
+  transform: scale(1.05);
+  filter: contrast(1.1);
+}
+
+.gallery-item:hover .hover-overlay {
+  opacity: 1;
+}
+
+.gallery-item:hover .view-text {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.item-details {
+  margin-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.item-details h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.item-details p {
+  color: #666;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 768px) {
+  .gallery-section {
+    padding: 80px 24px;
+  }
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+}

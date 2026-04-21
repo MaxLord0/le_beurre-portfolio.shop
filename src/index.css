@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+:root {
+  --bg-color: #050505;
+  --text-color: #ffffff;
+  --accent: #ff7300;
+  --accent-glow: rgba(255, 115, 0, 0.4);
+  --secondary: #6b21a8;
+  --secondary-glow: rgba(107, 33, 168, 0.4);
+  --border-light: rgba(255, 255, 255, 0.08);
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Orbitron', 'Inter', sans-serif;
+  --easing-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.page-transition {
+  opacity: 0;
+  visibility: hidden;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: var(--font-sans);
+  overflow: hidden; /* Canvas controls scroll now */
+  width: 100vw;
+  height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+/* Custom Selection */
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Technical HUD Overlays */
+.alche-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  color: rgba(255, 255, 255, 0.4);
+  font-family: monospace;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+}
+
+.corner-ui {
+  position: absolute;
+  padding: 24px;
+}
+
+.top-right {
+  top: 0;
+  right: 0;
+  text-align: right;
+  border-right: 1px solid rgba(255,255,255,0.1);
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.bottom-left {
+  bottom: 0;
+  left: 0;
+  border-left: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Custom Selection */
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Utility Animations & Visuals */
+.glass-panel {
+  background: rgba(10, 10, 10, 0.6);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-light);
+}
+
+/* Hide default cursor. Custom cursor will replace it. */
+body {
+  cursor: none; 
+}
+a, button, input[type="submit"] {
+  cursor: none;
+}
