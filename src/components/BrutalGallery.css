@@ -14,8 +14,7 @@
     color: var(--text);
     font-family: var(--font-display);
     width: 100vw;
-    height: 100vh;
-    overflow: hidden; /* Scroll is virtualized or proxied */
+    /* Removed height/overflow to allow proxy to expand the container for native scroll */
     position: relative;
     cursor: crosshair;
 }
@@ -125,8 +124,8 @@
 
 /* --- CARDS & CONTENT --- */
 .brutal-card {
-    width: 320px;
-    height: 460px;
+    width: 533px;
+    height: 300px;
     background: var(--card-bg);
     border: 1px solid var(--border);
     position: relative;
