@@ -132,7 +132,7 @@ const ShopSection: React.FC<ShopSectionProps> = ({ opacity, pointerEvents }) => 
                <span className="flex gap-2 items-center text-white/50 border border-white/10 px-3 py-1 rounded bg-white/5">STRIPE</span>
                <span className="flex gap-2 items-center text-white/50 border border-white/10 px-3 py-1 rounded bg-white/5">CRYPTO (ETH/BTC)</span>
             </div>
-          </>}
+          </>
         )}
 
         {activeTab === 'login' && (
