@@ -124,8 +124,8 @@
 
 /* --- CARDS & CONTENT --- */
 .brutal-card {
-    width: 533px;
-    height: 300px;
+    width: 800px;
+    height: 450px;
     background: var(--card-bg);
     border: 1px solid var(--border);
     position: relative;

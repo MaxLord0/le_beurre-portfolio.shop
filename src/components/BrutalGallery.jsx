@@ -272,20 +272,22 @@ const BrutalGallery = () => {
               )
             } else {
               return (
-                <div key={idx} className="brutal-item brutal-card">
-                  <div className="card-img-wrapper">
-                    <img src={item.imgObj.src} alt={item.imgObj.title} />
+                <div key={idx} className="brutal-item">
+                  <div className="brutal-card">
+                    <div className="card-img-wrapper">
+                      <img src={item.imgObj.src} alt={item.imgObj.title} />
+                    </div>
+                    <div className="card-header">
+                        <span className="card-id">ID-{item.randId}</span>
+                        <div style={{ width: '10px', height: '10px', background: 'var(--accent)' }}></div>
+                    </div>
+                    <h2>{item.imgObj.title}</h2>
+                    <div className="card-footer">
+                        <span>GRID: {item.grid}</span>
+                        <span>DATA: {item.dataSize}</span>
+                    </div>
+                    <div style={{ position:'absolute', bottom:'2rem', right:'2rem', fontSize:'4rem', opacity:0.1, fontWeight:900, zIndex: 2 }}>{item.num}</div>
                   </div>
-                  <div className="card-header">
-                      <span className="card-id">ID-{item.randId}</span>
-                      <div style={{ width: '10px', height: '10px', background: 'var(--accent)' }}></div>
-                  </div>
-                  <h2>{item.imgObj.title}</h2>
-                  <div className="card-footer">
-                      <span>GRID: {item.grid}</span>
-                      <span>DATA: {item.dataSize}</span>
-                  </div>
-                  <div style={{ position:'absolute', bottom:'2rem', right:'2rem', fontSize:'4rem', opacity:0.1, fontWeight:900, zIndex: 2 }}>{item.num}</div>
                 </div>
               )
             }
