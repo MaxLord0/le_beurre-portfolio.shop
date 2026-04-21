@@ -5,6 +5,7 @@ import * as PricingCard from '@/components/ui/pricing-card';
 import { CheckCircle2, Package, Image as ImageIcon, Sparkles } from 'lucide-react';
 
 import { SignIn1 } from '@/components/ui/modern-stunning-sign-in';
+import { ProfessionalConnect } from '@/components/ui/get-in-touch';
 
 interface ShopSectionProps {
   opacity: number;
@@ -131,7 +132,7 @@ const ShopSection: React.FC<ShopSectionProps> = ({ opacity, pointerEvents }) => 
                <span className="flex gap-2 items-center text-white/50 border border-white/10 px-3 py-1 rounded bg-white/5">STRIPE</span>
                <span className="flex gap-2 items-center text-white/50 border border-white/10 px-3 py-1 rounded bg-white/5">CRYPTO (ETH/BTC)</span>
             </div>
-          </>
+          </>}
         )}
 
         {activeTab === 'login' && (
@@ -139,27 +140,7 @@ const ShopSection: React.FC<ShopSectionProps> = ({ opacity, pointerEvents }) => 
         )}
 
         {activeTab === 'contact' && (
-          <div className="w-full max-w-xl bg-white/5 border border-white/10 p-8 rounded-xl backdrop-blur-md text-white mt-10 shadow-2xl">
-            <h2 className="text-2xl font-bold font-[Syncopate] uppercase mb-2">Secure Comms</h2>
-            <p className="text-sm text-white/50 mb-8 font-mono">Send me a direct signal for custom inquiries.</p>
-            <form className="space-y-4 font-mono" onSubmit={(e) => e.preventDefault()}>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs text-white/60 mb-1">CALLSIGN</label>
-                  <input type="text" placeholder="Your Name" className="w-full bg-black/50 border border-white/10 rounded px-4 py-3 text-sm focus:outline-none focus:border-[#ff7300]" />
-                </div>
-                <div>
-                  <label className="block text-xs text-white/60 mb-1">RETURN VECTOR</label>
-                  <input type="email" placeholder="Your Email" className="w-full bg-black/50 border border-white/10 rounded px-4 py-3 text-sm focus:outline-none focus:border-[#ff7300]" />
-                </div>
-              </div>
-              <div>
-                <label className="block text-xs text-white/60 mb-1">TRANSMISSION LOG</label>
-                <textarea rows={5} placeholder="Project Details..." className="w-full bg-black/50 border border-white/10 rounded px-4 py-3 text-sm focus:outline-none focus:border-[#ff7300] resize-none"></textarea>
-              </div>
-              <Button className="w-full bg-white text-black hover:bg-gray-200 py-6 font-bold uppercase tracking-widest mt-4">SEND SIGNAL</Button>
-            </form>
-          </div>
+           <ProfessionalConnect />
         )}
       </div>
     </div>
