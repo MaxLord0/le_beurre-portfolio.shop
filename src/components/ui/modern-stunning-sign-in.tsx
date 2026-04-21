@@ -7,12 +7,13 @@ const SignIn1 = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
+  const [isSignUp, setIsSignUp] = React.useState(false);
  
   const validateEmail = (email: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
  
-  const handleSignIn = () => {
+  const handleSubmit = () => {
     if (!email || !password) {
       setError("Please enter both email and password.");
       return;
@@ -22,11 +23,13 @@ const SignIn1 = () => {
       return;
     }
     setError("");
-    alert("Backend authentication module pending integration...");
+    alert(`${isSignUp ? "Sign Up" : "Sign In"} module pending. (Backend decoupled)`);
   };
  
+  const buttonClass = "w-full bg-[#ff7300]/10 border border-[#ff7300] text-[#ff7300] font-black px-5 py-3 rounded-full shadow-[0_0_15px_rgba(255,115,0,0.2)] hover:bg-white hover:text-[#ff7300] hover:shadow-[0_0_30px_rgba(255,115,0,0.8)] hover:border-white transition-all duration-300 mb-3 text-sm tracking-widest uppercase";
+
   return (
-    <div className="flex flex-col items-center justify-center relative overflow-hidden w-full rounded-xl py-12">
+    <div className="flex flex-col items-center justify-center relative w-full rounded-xl py-12">
       {/* Centered glass card */}
       <div className="relative z-10 w-full max-w-sm rounded-3xl bg-gradient-to-br from-[#ffffff10] to-transparent border border-white/10 backdrop-blur-md shadow-2xl p-8 flex flex-col items-center">
         {/* Logo */}
@@ -35,7 +38,7 @@ const SignIn1 = () => {
         </div>
         {/* Title */}
         <h2 className="text-2xl font-black text-white mb-6 text-center tracking-widest font-[Syncopate] uppercase">
-          SECURE NODE
+          {isSignUp ? "NEW NODE REGISTRATION" : "SECURE NODE"}
         </h2>
         {/* Form */}
         <div className="flex flex-col w-full gap-4 font-mono">
@@ -55,19 +58,19 @@ const SignIn1 = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
             {error && (
-              <div className="text-sm text-red-400 text-left">{error}</div>
+              <div className="text-sm text-[#ff7300] text-left">{error}</div>
             )}
           </div>
           <hr className="opacity-10 border-white" />
           <div>
             <button
-              onClick={handleSignIn}
-              className="w-full bg-[#6b21a8] text-white font-bold px-5 py-3 rounded-full shadow-[0_0_20px_rgba(107,33,168,0.4)] hover:bg-[#832bc9] transition mb-3 text-sm tracking-wider uppercase"
+              onClick={handleSubmit}
+              className={buttonClass}
             >
-              Sign in
+              {isSignUp ? "Sign Up" : "Sign in"}
             </button>
             {/* Google Sign In */}
-            <button className="w-full flex items-center justify-center gap-2 bg-white/5 rounded-full px-5 py-3 font-medium text-white shadow hover:bg-white/10 transition mb-2 text-sm border border-white/10 uppercase tracking-wide">
+            <button className="w-full flex items-center justify-center gap-2 bg-white/5 rounded-full px-5 py-3 font-bold text-white shadow hover:bg-white/10 transition mb-2 text-sm border border-white/10 uppercase tracking-wide">
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                 <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -76,16 +79,28 @@ const SignIn1 = () => {
               </svg>
               Google Link
             </button>
-            <div className="w-full text-center mt-2">
-              <span className="text-xs text-white/40">
-                NO ACCOUNT?{" "}
-                <a
-                  href="#"
-                  className="underline text-[#00f3ff] hover:text-[#00f3ff]/80 font-bold"
-                >
-                  INITIALIZE HERE
-                </a>
-              </span>
+            <div className="w-full text-center mt-3">
+              {isSignUp ? (
+                <span className="text-xs text-white/40">
+                  ALREADY HAVE ACCESS?{" "}
+                  <button
+                    onClick={() => setIsSignUp(false)}
+                    className="underline text-[#ff7300] hover:text-white font-bold transition-colors ml-1"
+                  >
+                    LOGIN NOW
+                  </button>
+                </span>
+              ) : (
+                <span className="text-xs text-white/40">
+                  NO ACCOUNT?{" "}
+                  <button
+                    onClick={() => setIsSignUp(true)}
+                    className="underline text-[#ff7300] hover:text-white font-bold transition-colors ml-1"
+                  >
+                    INITIALIZE HERE
+                  </button>
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -94,28 +109,28 @@ const SignIn1 = () => {
       {/* User count and avatars */}
       <div className="relative z-10 mt-8 flex flex-col items-center text-center font-mono">
         <p className="text-white/40 text-xs mb-3">
-          SECURE ENCLAVE ACTIVE. JOIN <span className="font-bold text-white">4,000+</span> CLIENTS.
+          SECURE ENCLAVE ACTIVE. JOIN <span className="font-bold text-[#ff7300]">4,000+</span> CLIENTS.
         </p>
         <div className="flex">
           <img
             src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100&h=100"
             alt="user"
-            className="w-8 h-8 rounded-full border-2 border-black object-cover -ml-2 first:ml-0 opacity-80 mix-blend-luminosity"
+            className="w-8 h-8 rounded-full border-2 border-black object-cover -ml-2 first:ml-0 opacity-80 mix-blend-luminosity hover:opacity-100 transition-opacity"
           />
           <img
             src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&fit=crop&q=80&w=100&h=100"
             alt="user"
-            className="w-8 h-8 rounded-full border-2 border-black object-cover -ml-2 opacity-80 mix-blend-luminosity"
+            className="w-8 h-8 rounded-full border-2 border-black object-cover -ml-2 opacity-80 mix-blend-luminosity hover:opacity-100 transition-opacity"
           />
           <img
             src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&q=80&w=100&h=100"
             alt="user"
-            className="w-8 h-8 rounded-full border-2 border-black object-cover -ml-2 opacity-80 mix-blend-luminosity"
+            className="w-8 h-8 rounded-full border-2 border-black object-cover -ml-2 opacity-80 mix-blend-luminosity hover:opacity-100 transition-opacity"
           />
           <img
             src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=100&h=100"
             alt="user"
-            className="w-8 h-8 rounded-full border-2 border-black object-cover -ml-2 opacity-80 mix-blend-luminosity"
+            className="w-8 h-8 rounded-full border-2 border-black object-cover -ml-2 opacity-80 mix-blend-luminosity hover:opacity-100 transition-opacity"
           />
         </div>
       </div>
