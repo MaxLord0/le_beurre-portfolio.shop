@@ -111,3 +111,10 @@ body {
 a, button, input[type="submit"] {
   cursor: none;
 }
+
+@layer base {
+  :root {
+    --gradient-color: #ff7300;
+    --sparkles-color: #ff7300;
+  }
+}

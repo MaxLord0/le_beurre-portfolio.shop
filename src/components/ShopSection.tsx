@@ -6,6 +6,7 @@ import { CheckCircle2, Package, Image as ImageIcon, Sparkles } from 'lucide-reac
 
 import { SignIn1 } from '@/components/ui/modern-stunning-sign-in';
 import { ProfessionalConnect } from '@/components/ui/get-in-touch';
+import { PresentationDashboard } from '@/components/PresentationDashboard';
 
 interface ShopSectionProps {
   opacity: number;
